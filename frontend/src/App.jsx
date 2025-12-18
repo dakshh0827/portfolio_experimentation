@@ -19,43 +19,38 @@ function App() {
 
   useEffect(() => {
     // Simulate loading
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 2000);
+    }, 1500);
 
-    // Smooth scroll
-    const lenis = {
-      init() {
-        gsap.ticker.add((time) => {
-          ScrollTrigger.update();
-        });
-      }
-    };
-    lenis.init();
-
-    return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-    };
+    return () => clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    if (!isLoading) {
+      // Initialize scroll trigger
+      ScrollTrigger.refresh();
+    }
+  }, [isLoading]);
 
   if (isLoading) {
     return (
       <div className="loader">
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-primary-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-white text-xl">Loading...</p>
+          <p className="text-white text-xl font-semibold">Loading Experience...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="App relative">
+    <div className="App relative bg-dark min-h-screen">
       <Cursor />
       <ScrollProgress />
       <Navbar />
       
-      <main>
+      <main className="relative">
         <Hero />
         <About />
         <Skills />
